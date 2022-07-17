@@ -1,0 +1,27 @@
+.component_wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 0.55rem;
+  background-color: blue;
+  width: fit-content;
+  height: fit-content;
+  max-width: 70%;
+  margin: 0.25rem 0;
+}
+
+.text_message_wrapper {
+  color: white;
+  width: 100%;
+}
+
+.text_metadata_wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.text_metadata_text {
+  color: rgb(133, 133, 133);
+  margin: 0;
+}
