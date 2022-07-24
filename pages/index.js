@@ -1,12 +1,14 @@
-import { useEffect } from "react";
-import { fromEvent, scan } from "rxjs";
-
+import getUserSession from "../utils/gunDB/getUserSession";
 export default function Home() {
-  useEffect(() => {
-    fromEvent(window.document, "click")
-      .pipe(scan((clickCount) => clickCount + 1, 0))
-      .subscribe((clickCount) => console.log(`Click count ${clickCount}`));
-  }, []);
-
-  return <h1> This is home</h1>;
+  return <h1>Loading...</h1>;
 }
+
+export const getServerSideProps = async (context) => {
+  let sessionDetails = await getUserSession();
+  return {
+    redirect: {
+      destination: sessionDetails ? "/home" : "/login",
+      permanent: false,
+    },
+  };
+};
