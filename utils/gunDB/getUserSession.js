@@ -1,13 +1,24 @@
 import initializeDB from "./initializeDB";
 const getUserSession = async () => {
-  let sessionDetails = null;
+  let sessionDetails = {
+    alias: null,
+    publicKey: null,
+  };
   let dbNode = initializeDB();
 
   //user DB reference
-  let userDB = dbNode.user();
+  let userDB = dbNode.user().recall({ sessionStorage: true });
 
-  sessionDetails = userDB.is || null; //userDB.is returns undefined when user is not present
+  let gunSessionDetails = await userDB.is; //userDB.is returns undefined when user is not present
 
+  if (gunSessionDetails?.pub) {
+    //if public key is present
+
+    sessionDetails = {
+      alias: await userDB.get("alias"), //username
+      publicKey: gunSessionDetails.pub,
+    };
+  }
   //check for user session details in 'session' DB
   return sessionDetails;
 };
