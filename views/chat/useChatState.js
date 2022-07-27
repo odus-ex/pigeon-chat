@@ -16,7 +16,7 @@ const useChatState = () => {
   const handleMessageSend = async () => {
     setMessages([...messages, userMessage]);
     setUserMessage("");
-    await createNewChatMessage(userMessage);
+    createNewChatMessage(userMessage);
   };
   function getChatSessionCallback(data) {
     console.log("CB ....", data);
