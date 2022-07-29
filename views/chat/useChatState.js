@@ -14,12 +14,14 @@ const useChatState = () => {
   //handlers
   const handleMessageTyping = (e) => setUserMessage(e.currentTarget.value);
   const handleMessageSend = async () => {
-    setMessages([...messages, userMessage]);
-    setUserMessage("");
+    // setMessages([...messages, userMessage]);
     createNewChatMessage(userMessage);
+    setUserMessage("");
+    getChatSession(getChatSessionCallback);
   };
-  function getChatSessionCallback(data) {
-    console.log("CB ....", data);
+  function getChatSessionCallback(newMessage) {
+    console.log("WTF ===>", newMessage, messages);
+    setMessages([...messages, newMessage]);
   }
 
   function checkDB() {
