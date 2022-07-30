@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-
+import { useGunDB } from "../../context/GunDB/";
 import { useRouter } from "next/router";
-import createNewUser from "../../utils/gunDB/createNewUser";
+// import createNewUser from "../../utils/gunDB/createNewUser";
+import { createNewUser } from "../../utils/adapters/gunDBAdapters";
 
 const useSignupState = () => {
   const [userName, setUserName] = useState(null);
@@ -10,14 +11,8 @@ const useSignupState = () => {
     message: "",
     isError: false,
   });
-  const [redirect, setRedirect] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (redirect) {
-      router.push("/login");
-    }
-  }, [redirect]);
+  const clientRouter = useRouter();
+  const { userDBRef } = useGunDB();
 
   const handleUserNameOnChange = (e) => {
     setUserName(e.currentTarget.value);
@@ -36,12 +31,13 @@ const useSignupState = () => {
       return;
     }
 
-    //if successfull sign up
-    setRedirect(true);
+    //on successfull creation go to login
+
+    clientRouter.push("/login");
   };
 
   const handleOnSignup = () => {
-    createNewUser(userName, password, onUserCreationCB);
+    createNewUser({ userName, password }, userDBRef, onUserCreationCB);
   };
 
   return {

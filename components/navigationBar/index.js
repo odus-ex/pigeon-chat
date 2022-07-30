@@ -4,6 +4,7 @@ import { useAuth } from "../../context/Auth";
 
 const NavigationBar = () => {
   const { userDetails, handleUserLogout } = useAuth();
+
   return (
     <div className={styles.component_wrapper}>
       <h4>{userDetails.alias || "You are not logged in"}</h4>
