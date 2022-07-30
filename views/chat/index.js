@@ -17,8 +17,11 @@ const ChatView = () => {
       <NavigationBar />
       <main className={styles.content_wrapper}>
         <section className={styles.conversation_wrapper}>
-          {messages.map((message) => (
-            <ChatBubble key={Math.random()} textMessage={message} />
+          {messages.map((chatObject) => (
+            <ChatBubble
+              key={chatObject.dttm}
+              textMessage={chatObject.message}
+            />
           ))}
         </section>
         <section className={styles.user_actions_wrapper}>
@@ -33,6 +36,7 @@ const ChatView = () => {
           >
             Send
           </button>
+          {/* For testing only */}
           <button onClick={checkDB}>Check DB</button>
         </section>
       </main>

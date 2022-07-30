@@ -1,13 +1,16 @@
 import "../styles/globals.css";
 
 import { AuthProvider } from "../context/Auth";
+import { GunDBProvider } from "../context/GunDB";
 
 function MyApp({ Component, pageProps }) {
   return (
     <div className="container">
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
+      <GunDBProvider>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+      </GunDBProvider>
     </div>
   );
 }
