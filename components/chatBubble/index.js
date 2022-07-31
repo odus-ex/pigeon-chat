@@ -1,10 +1,10 @@
 import { useAuth } from "../../context/Auth";
 import styles from "./chatBubble.module.css";
 
-const ChatBubble = ({ textMessage, timeInNonISOFormat, author }) => {
+const ChatBubble = ({ textMessage, timeInNonISOFormat, author = "You" }) => {
   let { userDetails } = useAuth();
 
-  const selfText = userDetails.alias !== author;
+  const selfText = userDetails.alias === author;
 
   const getPublishedTime = (timeNumber) => {
     let isoDTTM = new Date(timeNumber).toISOString();
@@ -14,13 +14,29 @@ const ChatBubble = ({ textMessage, timeInNonISOFormat, author }) => {
   return (
     <div
       className={`${styles.component_wrapper} ${
-        selfText && styles.component_wrapper__alternate
+        !selfText && styles.component_wrapper__alternate
       }`}
     >
-      <section className={styles.text_message_wrapper}>{textMessage}</section>
+      {!selfText && (
+        <section className={styles.author_name_wrapper}>
+          <p className={styles.author_name_text}>{author}</p>
+        </section>
+      )}
+      <section className={styles.text_message_wrapper}>
+        <p
+          className={`${styles.text_message} ${
+            selfText && styles.text_message__alternate
+          }`}
+        >
+          {textMessage}
+        </p>
+      </section>
       <section className={styles.text_metadata_wrapper}>
-        {selfText && <p className={styles.text_author}>{author}</p>}
-        <p className={styles.text_dttm}>
+        <p
+          className={`${styles.text_dttm} ${
+            selfText && styles.text_dttm__alternate
+          }`}
+        >
           {getPublishedTime(timeInNonISOFormat)}
         </p>
       </section>

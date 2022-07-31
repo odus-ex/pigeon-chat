@@ -4,6 +4,9 @@ import NavigationBar from "../../components/navigationBar";
 import ChatBubble from "../../components/chatBubble";
 
 import useChatState from "./useChatState";
+import MessageInput from "../../components/messageInput";
+import MainHeading from "../../components/mainHeading";
+
 const ChatView = () => {
   const {
     messages,
@@ -14,32 +17,34 @@ const ChatView = () => {
   } = useChatState();
   return (
     <div className={styles.page_wrapper}>
-      <NavigationBar />
+      <section className={styles.navigation_wrapper}>
+        <NavigationBar />
+      </section>
       <main className={styles.content_wrapper}>
         <section className={styles.conversation_wrapper}>
-          {messages.map((chatObject) => (
-            <ChatBubble
-              key={`${chatObject.dttm}_${Math.random()}`}
-              textMessage={chatObject.message}
-              timeInNonISOFormat={chatObject.dttm}
-              author={chatObject.alias}
-            />
-          ))}
+          {messages.length ? (
+            <>
+              {messages.map((chatObject) => (
+                <ChatBubble
+                  key={`${chatObject.dttm}_${Math.random()}`}
+                  textMessage={chatObject.message}
+                  timeInNonISOFormat={chatObject.dttm}
+                  author={chatObject.alias}
+                />
+              ))}
+            </>
+          ) : (
+            <div className={styles.conversation_empty_state}>
+              <MainHeading text="Strike a converstation" />
+            </div>
+          )}
         </section>
         <section className={styles.user_actions_wrapper}>
-          <input
-            className={styles.user_actions_input}
-            onChange={handleMessageTyping}
+          <MessageInput
+            onMessageType={handleMessageTyping}
+            onMessageSend={handleMessageSend}
             value={userMessage}
           />
-          <button
-            className={styles.user_actions_button}
-            onClick={() => handleMessageSend()}
-          >
-            Send
-          </button>
-          {/* For testing only */}
-          <button onClick={checkDB}>Check DB</button>
         </section>
       </main>
     </div>
