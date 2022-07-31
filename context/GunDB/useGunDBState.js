@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import GUN from "gun";
 import "gun/sea";
+import "gun/axe";
 
 import { peers, defaultChatRoomName } from "./gunConfig.js";
 
@@ -13,7 +14,8 @@ const useGunDB = () => {
   //initialise DBs
   useEffect(() => {
     if (dbRef === null) {
-      setDBRef(new GUN({ peers }));
+      // setDBRef(new GUN({ peers }));
+      setDBRef(new GUN());
     }
   }, []);
 
