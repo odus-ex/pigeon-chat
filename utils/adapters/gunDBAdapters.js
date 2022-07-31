@@ -10,14 +10,26 @@ export const createNewUser = (
   );
 };
 
-export const getAllMessages = (chatDBReference, callBack) => {
-  console.log("Checking available chats...", chatDBReference);
-  chatDBReference?.map().on((data) => callBack(data));
+export const getAllMessages = async (chatDBReference, callBack) => {
+  let allMessages = [];
+  await chatDBReference?.map().on((data) => {
+    allMessages.push({
+      alias: data.alias,
+      message: data.message,
+      isPublished: data.isPublished,
+      dttm: data.dttm,
+    });
+  });
+  callBack(allMessages);
 };
 
-export const createNewMessage = async (chatDBReference, messageString) => {
+export const createNewMessage = async (
+  chatDBReference,
+  messageString,
+  userDetails
+) => {
   chatDBReference?.set({
-    alias: "",
+    alias: userDetails?.alias,
     message: messageString,
     isPublished: true, // for content moderation,
     dttm: Date.now(), //created or updated date and time

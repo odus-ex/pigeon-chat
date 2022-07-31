@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../../context/Auth";
 import { useGunDB } from "../../context/GunDB";
 import {
   getAllMessages,
   createNewMessage,
 } from "../../utils/adapters/gunDBAdapters";
-// import createNewChatMessage from "../../utils/gunDB/createNewChatMessage";
-import getChatSession from "../../utils/gunDB/getChatSession";
 
 const useChatState = () => {
   const [messages, setMessages] = useState([]);
@@ -13,6 +12,7 @@ const useChatState = () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
 
   const { chatDBRef } = useGunDB();
+  const { userDetails } = useAuth();
 
   useEffect(() => {
     //when the component loads, initialize chat DB
@@ -21,7 +21,6 @@ const useChatState = () => {
 
   useEffect(() => {
     if (isNewMessage) {
-      console.log("Fetching for new messages...");
       getAllMessages(chatDBRef, getAllMessagesCallback);
       setIsNewMessage(false);
     }
@@ -31,16 +30,17 @@ const useChatState = () => {
   const handleMessageTyping = (e) => setUserMessage(e.currentTarget.value);
 
   const handleMessageSend = async () => {
-    createNewMessage(chatDBRef, userMessage);
+    createNewMessage(chatDBRef, userMessage, userDetails);
     setUserMessage("");
     setIsNewMessage(true);
   };
-  function getAllMessagesCallback(newMessage) {
-    setMessages([...messages, newMessage]);
+
+  function getAllMessagesCallback(allMessages) {
+    setMessages(allMessages);
   }
 
   function checkDB() {
-    getAllMessages(chatDBRef, getChatSessionCallback);
+    getAllMessages(chatDBRef, getAllMessagesCallback);
   }
 
   return {
