@@ -19,8 +19,10 @@ const ChatView = () => {
         <section className={styles.conversation_wrapper}>
           {messages.map((chatObject) => (
             <ChatBubble
-              key={chatObject.dttm}
+              key={`${chatObject.dttm}_${Math.random()}`}
               textMessage={chatObject.message}
+              timeInNonISOFormat={chatObject.dttm}
+              author={chatObject.alias}
             />
           ))}
         </section>
@@ -32,7 +34,7 @@ const ChatView = () => {
           />
           <button
             className={styles.user_actions_button}
-            onClick={handleMessageSend}
+            onClick={() => handleMessageSend()}
           >
             Send
           </button>
